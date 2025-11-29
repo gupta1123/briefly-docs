@@ -275,68 +275,74 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray('.reveal-hero').forEach((el: any) => {
-        gsap.fromTo(
-          el,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 90%' },
-          }
-        );
+    if (typeof window === 'undefined') return;
+    
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+      const ctx = gsap.context(() => {
+        gsap.utils.toArray('.reveal-hero').forEach((el: any) => {
+          gsap.fromTo(
+            el,
+            { y: 40, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 90%' },
+            }
+          );
+        });
+
+        gsap.utils.toArray('.reveal-card').forEach((el: any) => {
+          gsap.fromTo(
+            el,
+            { y: 60, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: 'back.out(1.2)',
+              scrollTrigger: { trigger: el, start: 'top 85%' },
+            }
+          );
+        });
+
+        gsap.utils.toArray('.reveal-row').forEach((el: any) => {
+          gsap.fromTo(
+            el,
+            { y: 50, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%' },
+            }
+          );
+        });
+
+        gsap.utils.toArray('.partner-logo').forEach((logo: any, idx: number) => {
+          gsap.fromTo(
+            logo,
+            { y: 30, opacity: 0, scale: 0.95 },
+            {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 0.6,
+              delay: idx * 0.05,
+              ease: 'power2.out',
+              scrollTrigger: { trigger: logo, start: 'top 90%' },
+            }
+          );
+        });
       });
 
-      gsap.utils.toArray('.reveal-card').forEach((el: any) => {
-        gsap.fromTo(
-          el,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: 'back.out(1.2)',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-          }
-        );
-      });
-
-      gsap.utils.toArray('.reveal-row').forEach((el: any) => {
-        gsap.fromTo(
-          el,
-          { y: 50, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-          }
-        );
-      });
-
-      gsap.utils.toArray('.partner-logo').forEach((logo: any, idx: number) => {
-        gsap.fromTo(
-          logo,
-          { y: 30, opacity: 0, scale: 0.95 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.6,
-            delay: idx * 0.05,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: logo, start: 'top 90%' },
-          }
-        );
-      });
-    });
-
-    return () => ctx.revert();
+      return () => ctx.revert();
+    } catch (error) {
+      console.error('GSAP initialization error:', error);
+    }
   }, []);
 
   useEffect(() => {
